@@ -6,19 +6,14 @@ class WeatherCard extends StatelessWidget {
   final Weather weather;
   final bool isFromCache;
 
-  const WeatherCard({
-    Key? key,
-    required this.weather,
-    this.isFromCache = false,
-  }) : super(key: key);
+  const WeatherCard({Key? key, required this.weather, this.isFromCache = false})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 8,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(24),
@@ -39,15 +34,11 @@ class WeatherCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            
+
             // آیکون آب و هوا
-            Icon(
-              _getWeatherIcon(),
-              size: 100,
-              color: Colors.white,
-            ),
+            Icon(_getWeatherIcon(), size: 100, color: Colors.white),
             const SizedBox(height: 16),
-            
+
             // دما
             Text(
               '${weather.temperature.toStringAsFixed(1)}°C',
@@ -58,26 +49,19 @@ class WeatherCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            
+
             // وضعیت
             Text(
               _translateCondition(weather.condition),
-              style: const TextStyle(
-                fontSize: 24,
-                color: Colors.white70,
-              ),
+              style: const TextStyle(fontSize: 24, color: Colors.white70),
             ),
             const SizedBox(height: 24),
-            
+
             // جزئیات
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildDetail(
-                  Icons.water_drop,
-                  'رطوبت',
-                  '${weather.humidity}%',
-                ),
+                _buildDetail(Icons.water_drop, 'رطوبت', '${weather.humidity}%'),
                 _buildDetail(
                   Icons.air,
                   'باد',
@@ -85,7 +69,7 @@ class WeatherCard extends StatelessWidget {
                 ),
               ],
             ),
-            
+
             // نشانگر کش
             if (isFromCache)
               Container(
@@ -103,10 +87,7 @@ class WeatherCard extends StatelessWidget {
                   children: [
                     Icon(Icons.offline_bolt, size: 16, color: Colors.white),
                     SizedBox(width: 4),
-                    Text(
-                      'آفلاین',
-                      style: TextStyle(color: Colors.white),
-                    ),
+                    Text('آفلاین', style: TextStyle(color: Colors.white)),
                   ],
                 ),
               ),
@@ -121,10 +102,7 @@ class WeatherCard extends StatelessWidget {
       children: [
         Icon(icon, color: Colors.white, size: 32),
         const SizedBox(height: 4),
-        Text(
-          label,
-          style: const TextStyle(color: Colors.white70),
-        ),
+        Text(label, style: const TextStyle(color: Colors.white70)),
         Text(
           value,
           style: const TextStyle(

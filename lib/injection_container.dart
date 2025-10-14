@@ -1,3 +1,4 @@
+// lib/injection_container.dart
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
@@ -9,6 +10,7 @@ import 'features/weather/data/datasources/weather_remote_data_source.dart';
 import 'features/weather/data/repositories/weather_repository_impl.dart';
 import 'features/weather/domain/repositories/weather_repository.dart';
 import 'features/weather/domain/usecases/get_current_weather.dart';
+import 'features/weather/domain/usecases/get_weather_forecast.dart';
 import 'features/weather/presentation/bloc/weather_bloc.dart';
 
 final sl = GetIt.instance;
@@ -19,12 +21,18 @@ Future<void> init() async {
   //! Features - Weather
 
   // Bloc
-  sl.registerFactory(() => WeatherBloc(getCurrentWeather: sl()));
+  sl.registerFactory(
+    () => WeatherBloc(
+      getCurrentWeather: sl(),
+      getWeatherForecast: sl(), // اضافه شد
+    ),
+  );
   print('✅ WeatherBloc ثبت شد');
 
   // Use cases
   sl.registerLazySingleton(() => GetCurrentWeather(sl()));
-  print('✅ GetCurrentWeather ثبت شد');
+  sl.registerLazySingleton(() => GetWeatherForecast(sl())); // اضافه شد
+  print('✅ UseCases ثبت شدند');
 
   // Repository
   sl.registerLazySingleton<WeatherRepository>(
@@ -59,7 +67,6 @@ Future<void> init() async {
   sl.registerLazySingleton(() => http.Client());
   print('✅ HTTP Client ثبت شد');
 
-  // تغییر اینجا - استفاده از InternetConnection
   sl.registerLazySingleton(() => InternetConnection());
   print('✅ InternetConnection ثبت شد');
 

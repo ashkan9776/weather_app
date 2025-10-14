@@ -1,33 +1,38 @@
+// lib/features/weather/presentation/bloc/weather_state.dart
 import 'package:equatable/equatable.dart';
 import '../../domain/entities/weather.dart';
+import '../../domain/entities/weather_forecast.dart'; // ⬅️ این import مهمه
 
-/// وضعیت‌های مختلف UI
 abstract class WeatherState extends Equatable {
   @override
   List<Object?> get props => [];
 }
 
-/// وضعیت اولیه - هنوز هیچ کاری نشده
 class WeatherInitial extends WeatherState {}
 
-/// در حال لود کردن
 class WeatherLoading extends WeatherState {}
 
-/// داده با موفقیت لود شد
 class WeatherLoaded extends WeatherState {
   final Weather weather;
-  final bool isFromCache; // آیا از کش خوانده شده؟
+  final bool isFromCache;
 
-  WeatherLoaded({
-    required this.weather,
-    this.isFromCache = false,
-  });
+  WeatherLoaded({required this.weather, this.isFromCache = false});
 
   @override
   List<Object?> get props => [weather, isFromCache];
 }
 
-/// خطا رخ داده
+class ForecastLoaded extends WeatherState {
+  // ⬅️ این state باید وجود داشته باشه
+  final WeatherForecast forecast;
+  final bool isFromCache;
+
+  ForecastLoaded({required this.forecast, this.isFromCache = false});
+
+  @override
+  List<Object?> get props => [forecast, isFromCache];
+}
+
 class WeatherError extends WeatherState {
   final String message;
 

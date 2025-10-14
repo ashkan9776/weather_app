@@ -1,7 +1,7 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:intl/date_symbol_data_local.dart'; // ⬅️ اضافه کن
 import 'features/weather/presentation/bloc/weather_bloc.dart';
 import 'features/weather/presentation/pages/weather_page.dart';
 import 'injection_container.dart' as di;
@@ -9,7 +9,9 @@ import 'injection_container.dart' as di;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // راه‌اندازی DI
+  // Initialize intl برای locale
+  await initializeDateFormatting('en', null); // ⬅️ اضافه کن
+
   await di.init();
 
   runApp(const MyApp());
@@ -23,12 +25,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Weather App',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        fontFamily: 'Vazir', // فونت فارسی
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue),
       home: BlocProvider(
-        // ساخت BLoC با DI
         create: (_) => di.sl<WeatherBloc>(),
         child: const WeatherPage(),
       ),
