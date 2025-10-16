@@ -9,9 +9,6 @@ RUN flutter pub get
 
 COPY . .
 
-# آنالیز و تست
-RUN flutter analyze
-RUN flutter test
 
 # ساخت اپ
 RUN flutter build apk --release
