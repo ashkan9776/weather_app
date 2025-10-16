@@ -1,26 +1,20 @@
-# استفاده از image پایه فلاتر
-FROM flutterdocker/flutter:stable
+# استفاده از image رسمی فلاتر
+FROM ghcr.io/cirruslabs/flutter:stable
 
 WORKDIR /app
 
-# کپی فایل‌های مورد نیاز برای dependencies
+# کپی فایل‌های پروژه
 COPY pubspec.yaml pubspec.lock ./
 RUN flutter pub get
 
-# کپی بقیه فایل‌های پروژه
 COPY . .
 
-# آنالیز کد
+# آنالیز و تست
 RUN flutter analyze
-
-# اجرای تست‌ها
 RUN flutter test
 
-# ساخت اپ برای اندروید
+# ساخت اپ
 RUN flutter build apk --release
 
-# ساخت اپ برای وب (در صورت نیاز)
-# RUN flutter build web --release
-
-# ساخت اپ برای iOS (نیاز به macOS)
-# RUN flutter build ios --release
+# کپی خروجی به volume
+CMD ["sh", "-c", "cp -r build/app/outputs/flutter-apk/ /output/"]

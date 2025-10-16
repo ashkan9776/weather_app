@@ -3,8 +3,6 @@ name: Flutter Docker Build
 on:
   push:
     branches: [master]
-  pull_request:
-    branches: [master]
 
 jobs:
   build:
@@ -17,7 +15,11 @@ jobs:
       - name: Build with Docker
         run: |
           docker build -t flutter-app .
-          docker run --rm -v $(pwd)/output:/app/build/app/outputs flutter-app
+          mkdir -p output
+          docker run --rm -v $(pwd)/output:/output flutter-app
+
+      - name: List build outputs
+        run: ls -la output/
 
       - name: Upload APK artifacts
         uses: actions/upload-artifact@v4
