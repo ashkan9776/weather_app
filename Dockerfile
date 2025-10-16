@@ -3,6 +3,7 @@ FROM ghcr.io/cirruslabs/flutter:stable
 
 WORKDIR /app
 
+
 # کپی فایل‌های پروژه
 COPY pubspec.yaml pubspec.lock ./
 RUN flutter pub get
