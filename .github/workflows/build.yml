@@ -14,22 +14,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: "stable"
-
-      - name: Build Docker image
+      - name: Build with Docker
         run: |
           docker build -t flutter-app .
+          docker run --rm -v $(pwd)/output:/app/build/app/outputs flutter-app
 
-      - name: Run build in container
-        run: |
-          docker run --rm -v $(pwd)/build:/app/build flutter-app
-
-      - name: Upload build artifacts
+      - name: Upload APK artifacts
         uses: actions/upload-artifact@v4
         with:
           name: flutter-apk
-          path: build/app/outputs/
+          path: output/
           retention-days: 30
