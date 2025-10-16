@@ -1,29 +1,31 @@
-name: Flutter Docker Build
+name: Flutter Build
 
 on:
   push:
-    branches: [master]
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Build with Docker
-        run: |
-          docker build -t flutter-app .
-          mkdir -p output
-          docker run --rm -v $(pwd)/output:/output flutter-app
-
-      - name: List build outputs
-        run: ls -la output/
-
-      - name: Upload APK artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: flutter-apk
-          path: output/
-          retention-days: 30
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Flutter
+      run: |
+        git clone https://github.com/flutter/flutter.git -b stable --depth 1 /opt/flutter
+        echo "/opt/flutter/bin" >> $GITHUB_PATH
+        
+    - name: Get dependencies
+      run: flutter pub get
+      
+    - name: Build single APK (without split)
+      run: flutter build apk --release
+      
+    - name: Upload single APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-release
+        path: build/app/outputs/flutter-apk/app-release.apk
+        retention-days: 30
